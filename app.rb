@@ -17,11 +17,13 @@ class App < Sinatra::Base
   before do
     @user = "Jose Mota"
     @height = session[:height]
-    puts "==> Entering request"
+    logger = Log4r::Logger["app"]
+    logger.info "==> Entering request"
   end
 
   after do
-    puts "<== Leaving request"
+    logger = Log4r::Logger["app"]
+    logger.info "<== Leaving request"
   end
 
   get "/sessions/new" do

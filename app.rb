@@ -1,9 +1,9 @@
 require "sinatra/base"
 
 IMAGES = [
-  { title: "Utopia"     , url: "http://fantasyartdesign.com/free-wallpapers/imgs/mid/68landscapes04-m241.jpg" },
-  { title: "Alaska"     , url: "http://www.davidsfotos.com/LANDSCAPESpage_files/LANDSCAPES2.jpg" },
-  { title: "The Unknown", url: "http://www.beautifullife.info/wp-content/uploads/2010/12/31/the-unknown.jpg" },
+  { title: "Utopia"     , url: "/images/0.jpeg" },
+  { title: "Alaska"     , url: "/images/1.jpeg" },
+  { title: "The Unknown", url: "/images/2.jpeg" },
 ]
 
 class App < Sinatra::Base
@@ -39,11 +39,23 @@ class App < Sinatra::Base
     erb :images
   end
 
-  get "/images/:index" do |index|
+  get "/images/:index/download" do |index|
+    @image = IMAGES[index.to_i]
+    attachment @image[:title]
+    send_file "images/#{index}.jpeg"
+  end
+
+  get "/images/:index.?:format?" do |index, format|
     index = index.to_i
     @image = IMAGES[index]
+    @index = index
 
-    haml :"images/show", layout: true
+    if format == "jpeg"
+      content_type :jpeg # image/jpeg
+      send_file "images/#{index}.jpeg"
+    else
+      haml :"images/show", layout: true
+    end
   end
 
   get "/" do

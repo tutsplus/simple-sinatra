@@ -18,6 +18,10 @@ class App < Sinatra::Base
     set({ foo: "bar", baz: "foo" })
   end
 
+  not_found do
+    haml :"404", layout: true, layout_engine: :erb
+  end
+
   before do
     @user = "Jose Mota"
     @height = session[:height]

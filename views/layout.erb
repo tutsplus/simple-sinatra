@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>Exhibit</title>
+    <link rel="stylesheet" href="/css/foundation.min.css" />
   </head>
   <body>
     <h1>Using ERB layout.</h1>
@@ -15,6 +16,9 @@
       <li>
         <%= @height %>
       </li>
+      <li>
+        The current environment is: <%= @environment %>
+      </li>
     </ul>
 
     <% if @message %>
@@ -24,5 +28,11 @@
       </blockquote>
     <% end %>
     <%= yield %>
+
+    <% if @environment == :development %>
+      <pre>
+        <%= @request.inspect %>
+      </pre>
+    <% end %>
   </body>
 </html>

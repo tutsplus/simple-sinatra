@@ -14,11 +14,19 @@ class App < Sinatra::Base
     @message = "You're viewing an image."
   end
 
+  configure do
+    set({ foo: "bar", baz: "foo" })
+  end
+
   before do
     @user = "Jose Mota"
     @height = session[:height]
+    @environment = settings.environment
+    @request = request
     logger = Log4r::Logger["app"]
     logger.info "==> Entering request"
+
+    logger.debug settings.foo
   end
 
   after do

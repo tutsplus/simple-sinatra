@@ -6,33 +6,39 @@
     <link rel="stylesheet" href="/css/foundation.min.css" />
   </head>
   <body>
-    <h1>Using ERB layout.</h1>
-    <p>The current user is <%= @user %>.</p>
+    <div class="row">
 
-    <ul>
-      <li>
-        <a href="/sessions/new">New session</a>
-      </li>
-      <li>
-        <%= @height %>
-      </li>
-      <li>
-        The current environment is: <%= @environment %>
-      </li>
-    </ul>
+      <h1><a href="/">Exhibit - Image manager</a></h1>
+      <p>The current user is <%= @user %>.</p>
 
-    <% if @message %>
-      <p>You have a message:</p>
-      <blockquote>
-        <%= @message %>
-      </blockquote>
-    <% end %>
-    <%= yield %>
+      <nav class="top-bar">
+        <ul>
+          <li>
+            <a href="/sessions/new">New session</a>
+          </li>
+          <li>
+            <a href="/images">Images</a>
+          </li>
+          <li>
+            <a><%= @height %></a>
+          </li>
+          <li>
+            <a>
+              The current environment is: <em><%= @environment %></em>
+            </a>
+          </li>
+        </ul>
 
-    <% if @environment == :development %>
-      <pre>
-        <%= @request.inspect %>
-      </pre>
-    <% end %>
-  </body>
+      </nav>
+
+      <% if @message %>
+        <p>You have a message:</p>
+        <blockquote>
+          <%= @message %>
+        </blockquote>
+      <% end %>
+      <%= yield %>
+
+  </div>
+</body>
 </html>

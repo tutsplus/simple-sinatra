@@ -62,7 +62,7 @@ class App < Sinatra::Base
       content_type :jpeg # image/jpeg
       send_file "images/#{index}.jpeg"
     else
-      haml :"images/show", layout: true
+      haml :"images/show", layout: true, layout_engine: :erb
     end
   end
 

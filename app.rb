@@ -7,8 +7,9 @@ IMAGES = [
 ]
 
 class App < Sinatra::Base
-
+  
   enable :sessions
+  disable :show_exceptions
 
   before /images/ do
     @message = "You're viewing an image."
@@ -20,6 +21,18 @@ class App < Sinatra::Base
 
   not_found do
     haml :"404", layout: true, layout_engine: :erb
+  end
+
+  error do
+    haml :error, layout: true, layout_engine: :erb
+  end
+
+  error 403 do
+    haml :"403", layout: true, layout_engine: :erb
+  end
+
+  get "/500" do
+    raise StandardError, "Intentional blowing up"
   end
 
   before do
@@ -47,6 +60,7 @@ class App < Sinatra::Base
   end
 
   get "/images" do
+    halt 403 if session[:height].nil?
     @images = IMAGES
     erb :images
   end

@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <title>Exhibit</title>
     <link rel="stylesheet" href="/css/foundation.min.css" />
+    <%= yield_content :css %>
+    <%= yield_content :js %>
   </head>
   <body>
     <div class="row">

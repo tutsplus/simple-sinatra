@@ -13,6 +13,8 @@ class App < Sinatra::Base
   register Sinatra::Prawn
   register Sinatra::Namespace
 
+  helpers Sinatra::ContentFor
+
   before /images/ do
     @message = "You're viewing an image."
   end

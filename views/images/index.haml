@@ -1,3 +1,8 @@
+-content_for :css do
+  %link(rel="stylesheet" href="/css/images.css")
+-content_for :js do
+  %script(src="/js/index.js")
+
 %h1 Images
 
 -if @images.count == 0

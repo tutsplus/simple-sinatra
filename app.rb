@@ -16,6 +16,20 @@ class App < Sinatra::Base
   helpers Sinatra::ContentFor
   helpers Sinatra::JSON
 
+  helpers do
+    def protected!
+      unless authorized?
+        response['WWW-Authenticate'] = %(Basic realm="Admins only!")
+        halt 401
+      end
+    end
+
+    def authorized?
+      @auth ||= Rack::Auth::Basic::Request.new(request.env)
+      @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['admin', 'admin']
+    end
+  end
+
   before /images/ do
     @message = "You're viewing an image."
   end
@@ -81,6 +95,7 @@ class App < Sinatra::Base
     end
 
     post ".json" do
+      protected!
       @logger.debug params
       @image = Image.create params[:image]
       @logger.debug @image.saved?
@@ -97,6 +112,7 @@ class App < Sinatra::Base
     end
 
     post do
+      protected!
       @image = Image.create params[:image]
       redirect "/images"
     end

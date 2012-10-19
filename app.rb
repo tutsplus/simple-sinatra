@@ -14,6 +14,7 @@ class App < Sinatra::Base
   register Sinatra::Namespace
 
   helpers Sinatra::ContentFor
+  helpers Sinatra::JSON
 
   before /images/ do
     @message = "You're viewing an image."
@@ -44,10 +45,7 @@ class App < Sinatra::Base
     @height = session[:height]
     @environment = settings.environment
     @request = request
-    logger = Log4r::Logger["app"]
-    logger.info "==> Entering request"
-
-    logger.debug settings.foo
+    @logger = Log4r::Logger["app"]
   end
 
   after do
@@ -71,6 +69,23 @@ class App < Sinatra::Base
   end
 
   namespace "/images" do
+
+    get ".json" do
+      @images = Image.all
+      json @images
+    end
+
+    get "/:id.json" do |id|
+      @image = Image.get(id)
+      json @image
+    end
+
+    post ".json" do
+      @logger.debug params
+      @image = Image.create params[:image]
+      @logger.debug @image.saved?
+      json message: "Image successfully created."
+    end
     get do # /images
       @images = Image.all
       haml :"/images/index", layout_engine: :erb
@@ -131,4 +146,7 @@ class App < Sinatra::Base
   get "/hello/:first_name/?:last_name?" do |first,last|
     "Hello #{first} #{last}"
   end
+
 end
+
+# vim: foldmethod=indent
